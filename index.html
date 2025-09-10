@@ -7,37 +7,40 @@
     <!-- Importa a biblioteca A-Frame. -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     
-    <!-- Importa a biblioteca MindAR para reconhecimento de imagem. Note que o nome do script mudou para "mindar-image-aframe". -->
+    <!-- Importa a biblioteca MindAR para reconhecimento de imagem. -->
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <!--
-      A cena agora usa o componente 'mindar-image'.
-      - 'imageTargetSrc': Aponta para o arquivo .mind com a imagem âncora.
-      - Outros atributos melhoram a renderização e desativam interfaces desnecessárias.
-    -->
     <a-scene 
-      mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;" 
+      mindar-image="imageTargetSrc: https://raw.githubusercontent.com/Guiziin227/testear/main/targets.mind;" 
       color-space="sRGB" 
       renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false"
     >
       
-      <!--
-        O bloco <a-assets> é a melhor forma de pré-carregar recursos como modelos e texturas.
-      -->
       <a-assets>
-        <!-- O erro principal estava aqui. Este é o link CORRETO (raw) para o modelo 3D. -->
+        <!-- O link foi atualizado para o seu arquivo .glb -->
         <a-asset-item id="avatarModel" src="https://raw.githubusercontent.com/Guiziin227/testear/main/Mustang%2013.04.2021%20Compressed.glb"></a-asset-item>
+        <!-- Adicionada a sua imagem de logo como um asset -->
+        <img id="logo" src="https://raw.githubusercontent.com/Guiziin227/testear/main/LOGO.png" />
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <!-- CÂMERA ATUALIZADA AQUI -->
+      <!-- Adicionado o atributo 'camera="near: 0.01"' para evitar que o modelo seja cortado quando está perto. -->
+      <a-camera position="0 0 0" look-controls="enabled: false" camera="near: 0.01"></a-camera>
 
-      <!-- A entidade de alvo que ancora o objeto 3D na imagem detectada. -->
+      <!-- LUZES ADICIONADAS AQUI -->
+      <!-- Luz ambiente para iluminar o modelo de forma geral -->
+      <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
+      <!-- Luz direcional para criar sombras e realces, como o sol -->
+      <a-light type="directional" color="#FFF" intensity="1" position="-1 1 2"></a-light>
+
       <a-entity mindar-image-target="targetIndex: 0">
+        <!-- Adicionado um plano para visualizar a sua imagem de âncora (o logo) -->
+        <a-plane src="#logo" position="0 0 0" height="1" width="1" rotation="0 0 0"></a-plane>
         <a-gltf-model 
-            rotation="0 180 0" 
+            rotation="180 0 0" 
             position="0 0 0.1" 
             scale="0.1 0.1 0.1" 
             src="#avatarModel"
@@ -48,7 +51,4 @@
     </a-scene>
   </body>
 </html>
-
-
-
 
