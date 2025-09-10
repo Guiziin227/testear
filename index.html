@@ -1,63 +1,23 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <title>MindAR - Demonstração de AR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
-    <!-- Importa a biblioteca A-Frame, que é a base para a criação de cenas 3D/VR/AR na web. -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    
-    <!-- Importa a biblioteca MindAR específica para A-Frame, que adiciona as funcionalidades de reconhecimento de imagem. -->
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-aframe.prod.js"></script>
-
-    <style>
-      /* Estilo para garantir que a experiência ocupe a tela inteira. */
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <!--
-      A tag <a-scene> é o container principal para toda a experiência de Realidade Aumentada.
-      O atributo 'mindar-aframe-system' configura o sistema de AR.
-        - 'imageTargetSrc': Aponta para o seu arquivo .mind. É crucial usar o link "raw" do GitHub para que o arquivo seja acessado diretamente.
-        - 'maxTrack': Número de imagens que podem ser rastreadas simultaneamente.
-        - 'uiLoading' e 'uiScanning': Mostra a interface padrão do MindAR para indicar o carregamento e o processo de escaneamento da imagem.
-      
-      Outros atributos desativam a interface de VR e a solicitação de permissão de orientação do dispositivo, que não são necessárias aqui.
-    -->
-    <a-scene 
-      mindar-aframe-system="imageTargetSrc: https://raw.githubusercontent.com/Guiziin227/testear/main/targets.mind; maxTrack: 1; uiLoading: yes; uiScanning: yes;" 
-      vr-mode-ui="enabled: false" 
-      device-orientation-permission-ui="enabled: false"
-    >
-      
-      <!-- A câmera é o ponto de vista do usuário. Controles de look são desativados pois o movimento é controlado pelo dispositivo físico. -->
+    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+    <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" />
+    <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/softmind/scene.gltf"></a-asset-item>
+      </a-assets>
+
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      
-      <!--
-        Esta entidade funciona como a "âncora". Ela só se torna visível quando a imagem alvo é detectada pela câmera.
-        - 'mindar-aframe-target': Vincula esta entidade a um alvo.
-        - 'targetIndex: 0': Especifica que esta âncora corresponde à primeira imagem (índice 0) no seu arquivo 'targets.mind'.
-      -->
-      <a-entity mindar-aframe-target="targetIndex: 0">
-        <!--
-          A tag <a-gltf-model> é usada para carregar e exibir o seu modelo 3D no formato glTF.
-          - 'src': O link "raw" para o seu arquivo Bambo_House.gltf.
-          - 'rotation': Rotação inicial do modelo nos eixos X, Y, Z.
-          - 'position': Posição do modelo em relação ao centro da imagem âncora.
-          - 'scale': Escala do modelo para ajustar o seu tamanho na cena.
-          - 'animation-mixer': Ativa as animações que possam existir no modelo.
-        -->
-        <a-gltf-model 
-            rotation="0 0 0" 
-            position="0 0 0" 
-            scale="0.05 0.05 0.05" 
-            src="https://raw.githubusercontent.com/Guiziin227/testear/main/Bambo_House.gltf"
-            animation-mixer
-        ></a-gltf-model>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        >
       </a-entity>
     </a-scene>
   </body>
